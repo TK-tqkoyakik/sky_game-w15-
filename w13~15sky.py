@@ -1,9 +1,7 @@
-"""第12回スキーゲーム (第11回教材：ASCIIスキーゲーム）.
+"""
 
-実行：python w12_ski.py
-Windowsで curses が見つからない場合：py -m pip install windows-curses
+第12回スキーゲームの改良.（最終提出課題用）
 
-w11演習01：update_distance_score() の中だけを実装する。
 """
 
 import random
@@ -17,6 +15,7 @@ except ImportError:
         "curses を読み込めません。Windowsでは "
         "'py -m pip install windows-curses' を実行してください。"
     )
+
 
 
 # 画面とゲームの基本設定
@@ -59,7 +58,7 @@ def create_state(field_width, field_height, rng):
         "field_height": field_height,
         "course_center": field_width // 2,
         "course_half_width": half_width,
-        "rows": deque(),
+        "rows": deque() ,
         "game_over_reason": "",
     }
 
@@ -134,7 +133,7 @@ def move_course_one_row(state, rng):
 
 
 def check_collision(state):
-    """現在のプレイヤー位置に崖、木、コインがあるか判定する。"""
+    """現在のプレイヤー位置に崖、木、コイン、スターがあるか判定する。"""
     player_x = int(round(state["x"]))
     row = state["rows"][state["y"]]
     if player_x <= row["left"] or player_x >= row["right"]:
@@ -149,7 +148,7 @@ def check_collision(state):
     elif row["star"] == player_x:
         state["star_power"] += 1
         row["star"] = None
-        
+        state["score"] += 500
 
 
 def update_game(state, dt, rng):
@@ -164,7 +163,7 @@ def update_game(state, dt, rng):
     state["speed"] = (
         state["base_speed"]
         + (state["level"] - 1) * 0.15
-        + state["star_power"] * 0.05
+        + state["star_power"] * 0.5
     ) * multiplier
 
     # 毎フレームではなく、実際に1行進んだときだけ位置と距離を更新する。
