@@ -52,7 +52,6 @@ def create_state(field_width, field_height, rng):
         "score": 0,           # 距離とコイン取得で更新する
         "level": 1,           # 100行進むごとに上昇
         "star_power": 0,      # スター取得で増える。0のときは通常速度。
-        "coin_inhure": 1,        # コイン取得で増える。とればとるほどコインのスコア倍率が上がる。
         "coin_score": 100,        # コインのスコア
         "difficulty": DIFFICULTY_NORMAL,
         "scroll_progress": 0.0,
@@ -146,7 +145,7 @@ def check_collision(state):
         state["status"] = STATUS_GAME_OVER
     elif row["coin"] == player_x:
 
-        state["coin_score"] = state["coin_score"] * state["coin_inhure"] 
+        state["coin_score"] = state["coin_score"] * 2
         state["score"] = state["score"] + state["coin_score"]
         state["coin_inhure"] += 1
         if state["star_power"] > 0:
