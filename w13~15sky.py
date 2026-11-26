@@ -53,6 +53,7 @@ def create_state(field_width, field_height, rng):
         "level": 1,           # 100行進むごとに上昇
         "star_power": 0,      # スター取得で増える。0のときは通常速度。
         "coin_inhure": 1,        # コイン取得で増える。とればとるほどコインのスコア倍率が上がる。
+        "coin_score": 100,        # コインのスコア
         "difficulty": DIFFICULTY_NORMAL,
         "scroll_progress": 0.0,
         "field_width": field_width,
@@ -144,9 +145,12 @@ def check_collision(state):
         state["game_over_reason"] = "TREE!"
         state["status"] = STATUS_GAME_OVER
     elif row["coin"] == player_x:
+
+        state["coin_score"] = state["coin_score"] * state["coin_inhure"] 
+        state["score"] = state["score"] + state["coin_score"]
         state["coin_inhure"] += 1
-        state["score"] = state["score"] + state["coin_inhure"] * 100
-        state["star_power"] -= 1
+        if state["star_power"] > 0:
+            state["star_power"] -= 1
         row["coin"] = None
     elif row["star"] == player_x:
         state["star_power"] += 1
