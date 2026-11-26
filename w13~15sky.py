@@ -144,10 +144,8 @@ def check_collision(state):
         state["game_over_reason"] = "TREE!"
         state["status"] = STATUS_GAME_OVER
     elif row["coin"] == player_x:
-
-        state["coin_score"] = state["coin_score"] * 2
         state["score"] = state["score"] + state["coin_score"]
-        state["coin_inhure"] += 1
+        state["coin_score"] = state["coin_score"] * 2
         if state["star_power"] > 0:
             state["star_power"] -= 1
         row["coin"] = None
